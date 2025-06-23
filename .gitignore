@@ -1,0 +1,64 @@
+# === Общие временные файлы и кэш ===
+*.log
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+
+# === Maven / Gradle / Java build ===
+target/
+build/
+out/
+*.class
+*.jar
+*.war
+*.ear
+
+# Вложенные билды исключаем, если вдруг кто-то их сохраняет
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# === Maven Wrapper ===
+.mvn/wrapper/maven-wrapper.jar
+/mvnw
+/mvnw.cmd
+
+# === Секреты и конфиги ===
+.env
+*.env
+**/application.properties
+**/application.yml
+**/application-*.properties
+**/application-*.yml
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# === STS (Spring Tool Suite) ===
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# === VS Code ===
+.vscode/
+
+# === NetBeans ===
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === Операционные системы ===
+*.bak
+*.orig
+*.rej
