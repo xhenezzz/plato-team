@@ -19,9 +19,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserDto register(@Valid @RequestBody RegisterDto dto){
-       return userService.registerUser(dto);
+    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterDto dto) {
+        UserDto userDto = userService.registerUser(dto);
+        return ResponseEntity.status(201).body(userDto);
     }
+
 
     @GetMapping("/confirm-email")
     public ResponseEntity<String> confirmEmail(@RequestParam String token) {

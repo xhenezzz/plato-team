@@ -14,7 +14,6 @@ public interface UserMapper {
     User toEntity(UserDto dto);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "emailConfirmed", constant = "false")
-    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "confirmationToken", ignore = true)
     @Mapping(target = "tokenExpiry", ignore = true)
     @Mapping(target = "password", expression = "java(passwordEncoder.encode(dto.getPassword()))")
