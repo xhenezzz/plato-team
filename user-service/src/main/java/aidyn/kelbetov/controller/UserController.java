@@ -41,4 +41,10 @@ public class UserController {
         userService.resendConfirmationEmail(email);
         return ResponseEntity.ok("Письмо с подтверждением отправлено повторно");
     }
+
+    @GetMapping("/by-email")
+    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email) {
+        UserDto userDto = userService.findByEmail(email);
+        return ResponseEntity.ok(userDto);
+    }
 }

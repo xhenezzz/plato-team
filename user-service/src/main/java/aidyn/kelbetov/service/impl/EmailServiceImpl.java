@@ -29,6 +29,8 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendConfirmationEmail(String email, String token) {
+        validateEmailParameters(email, token);
+
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
