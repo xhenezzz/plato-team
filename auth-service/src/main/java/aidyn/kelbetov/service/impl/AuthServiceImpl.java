@@ -4,7 +4,6 @@ import aidyn.kelbetov.dto.AuthResponse;
 import aidyn.kelbetov.dto.LoginRequest;
 import aidyn.kelbetov.dto.UserDto;
 import aidyn.kelbetov.jwt.JwtTokenProvider;
-import aidyn.kelbetov.model.Role;
 import aidyn.kelbetov.service.AuthService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
