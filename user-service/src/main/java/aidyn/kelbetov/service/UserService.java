@@ -4,9 +4,13 @@ import aidyn.kelbetov.dto.RegisterDto;
 import aidyn.kelbetov.dto.UserDto;
 
 public interface UserService {
-    public UserDto registerUser(RegisterDto user);
+    UserDto registerUser(RegisterDto user);
+
     UserDto findByEmail(String email);
+
     boolean confirmEmail(String token);
+
     boolean validatePassword(String email, String password);
+
     void resendConfirmationEmail(String email);
 }
