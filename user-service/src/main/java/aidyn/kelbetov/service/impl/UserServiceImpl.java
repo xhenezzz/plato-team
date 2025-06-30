@@ -13,6 +13,7 @@ import aidyn.kelbetov.repo.EmailChangeTokenRepository;
 import aidyn.kelbetov.repo.UserRepository;
 import aidyn.kelbetov.service.EmailService;
 import aidyn.kelbetov.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
