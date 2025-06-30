@@ -1,6 +1,6 @@
 package aidyn.kelbetov.service.impl;
 
-import aidyn.kelbetov.dto.EmailChangeToken;
+import aidyn.kelbetov.entity.EmailChangeToken;
 import aidyn.kelbetov.dto.RegisterDto;
 import aidyn.kelbetov.dto.UserDto;
 import aidyn.kelbetov.entity.User;
