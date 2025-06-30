@@ -113,6 +113,28 @@ public class EmailServiceImpl implements EmailService {
             """.formatted(appName, safeUrl, safeUrl, appName);
     }
 
+    @Override
+    public void sendEmailChangeConfirm(String newEmail, String token) {
+        validateEmailParameters(newEmail, token);
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(newEmail);
+            helper.setSubject("Подтверждение смены Email");
+            helper.setFrom("aidyn.kelbetov@yandex.ru");
+
+            String confirmationUrl = frontendUrl + "/api/users/confirm-email-change?token=" + token;
+            String emailContent = buildEmailContent(confirmationUrl);
+
+            helper.setText(emailContent, true);
+            mailSender.send(message);
+        } catch (MessagingException e){
+            throw new EmailSendException("Ошибка отправки email: " + e.getMessage());
+        }
+    }
+
     private String buildConfirmationUrl(String token) {
         if (!frontendUrl.startsWith("http://") && !frontendUrl.startsWith("https://")) {
             System.out.println("Frontend URL не содержит протокол: {}" + frontendUrl);

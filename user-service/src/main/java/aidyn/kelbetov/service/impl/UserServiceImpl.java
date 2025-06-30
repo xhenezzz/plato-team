@@ -1,15 +1,19 @@
 package aidyn.kelbetov.service.impl;
 
+import aidyn.kelbetov.entity.EmailChangeToken;
 import aidyn.kelbetov.dto.RegisterDto;
 import aidyn.kelbetov.dto.UserDto;
 import aidyn.kelbetov.entity.User;
+import aidyn.kelbetov.exception.EmailAlreadyExistException;
 import aidyn.kelbetov.exception.EmailNotConfirmedException;
 import aidyn.kelbetov.exception.UserAlreadyExistsException;
 import aidyn.kelbetov.exception.UserNotFoundException;
 import aidyn.kelbetov.mapper.UserMapper;
+import aidyn.kelbetov.repo.EmailChangeTokenRepository;
 import aidyn.kelbetov.repo.UserRepository;
 import aidyn.kelbetov.service.EmailService;
 import aidyn.kelbetov.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -22,12 +26,14 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository repository;
+    private final EmailChangeTokenRepository emailChangeTokenRepository;
     private final UserMapper userMapper;
     private final EmailService emailService;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository repository, UserMapper userMapper, EmailService emailService) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository repository, EmailChangeTokenRepository emailChangeTokenRepository, UserMapper userMapper, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.repository = repository;
+        this.emailChangeTokenRepository = emailChangeTokenRepository;
         this.userMapper = userMapper;
         this.emailService = emailService;
     }
@@ -122,7 +128,47 @@ public class UserServiceImpl implements UserService {
         emailService.sendConfirmationEmail(user.getEmail(), newToken);
     }
 
+    @Override
+    public void requestEmailChange(String newEmail) {
+        String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        if(repository.existsByEmail(newEmail)){
+            throw new EmailAlreadyExistException("Email уже используется другим пользователем!");
+        }
+
+        String token = generateConfirmationToken();
+
+        EmailChangeToken changeToken = new EmailChangeToken();
+        changeToken.setToken(token);
+        changeToken.setNewEmail(newEmail);
+        changeToken.setOldEmail(currentEmail);
+        changeToken.setExpiry(LocalDateTime.now().plusHours(24));
+
+        emailChangeTokenRepository.save(changeToken);
+        emailService.sendEmailChangeConfirm(newEmail, token);
+    }
+
+    @Override
+    public boolean confirmEmailChange(String token) {
+        Optional<EmailChangeToken> opt = emailChangeTokenRepository.findByToken(token);
+        if(opt.isEmpty()) return false;
+
+        EmailChangeToken changeToken = opt.get();
+        if(changeToken.getExpiry().isBefore(LocalDateTime.now())) return false;
+
+        User user = repository.findByEmail(changeToken.getOldEmail())
+                .orElseThrow(() -> new UserNotFoundException("Пользователь не найден!"));
+
+        user.setEmail(changeToken.getNewEmail());
+        repository.save(user);
+        emailChangeTokenRepository.delete(changeToken);
+
+        return true;
+    }
+
     private String generateConfirmationToken() {
         return UUID.randomUUID().toString();
     }
+
+
 }
