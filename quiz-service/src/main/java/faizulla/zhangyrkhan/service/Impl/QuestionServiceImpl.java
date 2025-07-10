@@ -1,16 +1,12 @@
 package faizulla.zhangyrkhan.service.Impl;
 
 import faizulla.zhangyrkhan.dto.request.CreateQuestionRequest;
-import faizulla.zhangyrkhan.dto.request.CreateQuizRequest;
 import faizulla.zhangyrkhan.dto.request.UpdateQuestionRequest;
 import faizulla.zhangyrkhan.dto.response.QuestionResponse;
-import faizulla.zhangyrkhan.dto.response.QuizResponse;
 import faizulla.zhangyrkhan.entity.QuestionEntity;
-import faizulla.zhangyrkhan.entity.QuizEntity;
 import faizulla.zhangyrkhan.excrption.ResourceNotFoundException;
 import faizulla.zhangyrkhan.mapper.QuestionMapper;
 import faizulla.zhangyrkhan.repository.QuestionRepository;
-import faizulla.zhangyrkhan.repository.QuizRepository;
 import faizulla.zhangyrkhan.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
