@@ -28,6 +28,7 @@ public class EmailServiceImpl implements EmailService {
         this.mailSender = mailSender;
     }
 
+    @Async
     @Override
     public void sendConfirmationEmail(String email, String token) {
         validateEmailParameters(email, token);

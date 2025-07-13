@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+    private Long id;
     @NotBlank(message = "Имя не может быть пустым! Пожалуйста заполните поля!")
     private String name;
     @NotBlank(message = "Фамилия не может быть пустым! Пожалуйста заполните поля!")

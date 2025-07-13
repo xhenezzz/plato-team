@@ -22,8 +22,16 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        String idHeader = request.getHeader("X-User-Id");
         String email = request.getHeader("X-User-Email");
         String role = request.getHeader("X-User-Role");
+
+        Long id = null;
+        if (idHeader != null) {
+            try {
+                id = Long.parseLong(idHeader);
+            } catch (NumberFormatException ignored) {}
+        }
 
         if (email != null && role != null) {
             UsernamePasswordAuthenticationToken authentication =
@@ -32,6 +40,8 @@ public class GatewayAuthenticationFilter extends OncePerRequestFilter {
                             null,
                             List.of(new SimpleGrantedAuthority(role))
                     );
+
+            authentication.setDetails(id);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

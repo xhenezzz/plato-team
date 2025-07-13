@@ -1,6 +1,7 @@
 package aidyn.kelbetov.dto;
 
 import aidyn.kelbetov.model.Role;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+    private Long id;
+
     @Email(message = "Неверный формат email")
     @NotBlank(message = "Email не может быть пустым")
     private String email;

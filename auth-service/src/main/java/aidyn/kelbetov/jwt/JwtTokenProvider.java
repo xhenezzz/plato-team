@@ -2,6 +2,7 @@ package aidyn.kelbetov.jwt;
 
 import aidyn.kelbetov.dto.UserDto;
 import aidyn.kelbetov.model.Role;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,6 +27,7 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("id", user.getId())
                 .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -53,6 +55,15 @@ public class JwtTokenProvider {
         return Role.valueOf(roleStr);
     }
 
+    public Long getIdFromToken (String token){
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.get("id", Long.class);
+    }
 
     public boolean validateToken(String token){
         try {

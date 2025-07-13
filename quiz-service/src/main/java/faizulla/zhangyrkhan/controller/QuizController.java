@@ -16,7 +16,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/quizzes")
 @RequiredArgsConstructor
-public class QuizController {
+public class   QuizController {
     private final QuizService quizService;
 
     // Создание квиза

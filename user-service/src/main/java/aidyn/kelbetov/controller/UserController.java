@@ -32,7 +32,7 @@ public class UserController {
 
 
     @GetMapping("/confirm-email")
-    public ResponseEntity<String> confirmEmail(@RequestParam String token) {
+    public ResponseEntity<String> confirmEmail(@Valid @RequestParam String token) {
         boolean confirmed = userService.confirmEmail(token);
 
         if (confirmed) {
@@ -42,14 +42,25 @@ public class UserController {
         }
     }
 
+    @GetMapping("/confirm-email-change")
+    public ResponseEntity<String> confirmEmailChange(@Valid @RequestParam String token) {
+        boolean confirmed = userService.confirmEmailChange(token);
+
+        if (confirmed) {
+            return ResponseEntity.ok("Email успешно изменён!");
+        } else {
+            return ResponseEntity.badRequest().body("Неверный или истёкший токен");
+        }
+    }
+
     @PostMapping("/resend-confirmation")
-    public ResponseEntity<String> resendConfirmation(@RequestParam String email) {
+    public ResponseEntity<String> resendConfirmation(@Valid @RequestParam String email) {
         userService.resendConfirmationEmail(email);
         return ResponseEntity.ok("Письмо с подтверждением отправлено повторно");
     }
 
     @GetMapping("/by-email")
-    public ResponseEntity<UserDto> getUserByEmail(@RequestParam String email,
+    public ResponseEntity<UserDto> getUserByEmail(@Valid @RequestParam String email,
                                                   @RequestHeader(value = "X-INTERNAL-KEY", required = false) String key) {
         if(key == null || !key.equals(internalSecret)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -59,8 +70,9 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+
     @PostMapping("/change-email")
-    public ResponseEntity<String> requestEmailChange(@RequestHeader("X-User-Email") String currentEmail,
+    public ResponseEntity<String> requestEmailChange(@Valid @RequestHeader("X-User-Email") String currentEmail,
                                                      @RequestBody EmailChangeRequest request) {
         System.out.println("📩 Получен X-User-Email: " + currentEmail); // ← Добавь
         userService.requestEmailChange(currentEmail, request.getNewEmail());

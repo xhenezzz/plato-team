@@ -28,7 +28,8 @@ public class SecurityConfig {
                                 "/api/users/by-email",
                                 "/api/users/register",
                                 "/api/users/confirm-email",
-                                "/api/users/resend-confirmation"
+                                "/api/users/resend-confirmation",
+                                "/api/users/confirm-email-change"
                         ).permitAll()
 
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")

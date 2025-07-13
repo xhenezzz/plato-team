@@ -42,14 +42,12 @@ public class JwtGatewayFilter implements GlobalFilter, Ordered {
                         .parseClaimsJws(token)
                         .getBody();
 
+                Long id = claims.get("id", Long.class);
                 String email = claims.getSubject();
                 String role = claims.get("role", String.class);
 
-                System.out.println("✅ Авторизация прошла. Email: " + email + ", Role: " + role); // <-- сюда
-                System.out.println("🔍 JWT заголовок: " + authHeader);
-                System.out.println("📍 Путь запроса: " + path);
-
                 ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                        .header("X-User-Id", String.valueOf(id))
                         .header("X-User-Email", email)
                         .header("X-User-Role", role)
                         .build();
