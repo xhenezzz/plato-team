@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
+		<version>3.1.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>aidyn.kelbetov</groupId>
@@ -27,6 +27,8 @@
 		<module>quiz-service</module>
 		<module>group-service</module>
 		<module>answers-service</module>
+		<module>gateway</module>
+		<module>discovery-service</module>
 	</modules>
 	<scm>
 		<connection/>
@@ -49,6 +51,18 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>2022.0.4</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>

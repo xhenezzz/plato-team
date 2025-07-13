@@ -7,6 +7,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
@@ -112,7 +113,7 @@ public class EmailServiceImpl implements EmailService {
             </html>
             """.formatted(appName, safeUrl, safeUrl, appName);
     }
-
+    @Async
     @Override
     public void sendEmailChangeConfirm(String newEmail, String token) {
         validateEmailParameters(newEmail, token);

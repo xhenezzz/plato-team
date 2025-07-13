@@ -2,8 +2,6 @@ package aidyn.kelbetov.service;
 
 import aidyn.kelbetov.dto.RegisterDto;
 import aidyn.kelbetov.dto.UserDto;
-import aidyn.kelbetov.entity.Role;
-import aidyn.kelbetov.entity.User;
 
 public interface UserService {
     UserDto registerUser(RegisterDto user);
@@ -16,7 +14,7 @@ public interface UserService {
 
     void resendConfirmationEmail(String email);
 
-    void requestEmailChange(String newEmail);
+    void requestEmailChange(String currentEmail, String newEmail);
 
     boolean confirmEmailChange(String token);
 }

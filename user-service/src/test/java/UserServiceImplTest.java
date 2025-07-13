@@ -1,3 +1,4 @@
+import aidyn.kelbetov.dto.LoginUserDto;
 import aidyn.kelbetov.dto.RegisterDto;
 import aidyn.kelbetov.dto.UserDto;
 import aidyn.kelbetov.entity.User;

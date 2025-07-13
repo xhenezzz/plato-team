@@ -13,7 +13,7 @@ import aidyn.kelbetov.repo.EmailChangeTokenRepository;
 import aidyn.kelbetov.repo.UserRepository;
 import aidyn.kelbetov.service.EmailService;
 import aidyn.kelbetov.service.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final EmailService emailService;
 
-    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository repository, EmailChangeTokenRepository emailChangeTokenRepository, UserMapper userMapper, EmailService emailService) {
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository repository, EmailChangeTokenRepository emailChangeTokenRepository, UserMapper userMapper, EmailService emailService, HttpServletRequest request) {
         this.passwordEncoder = passwordEncoder;
         this.repository = repository;
         this.emailChangeTokenRepository = emailChangeTokenRepository;
@@ -129,10 +129,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void requestEmailChange(String newEmail) {
-        String currentEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        if(repository.existsByEmail(newEmail)){
+    public void requestEmailChange(String currentEmail, String newEmail) {
+        if (repository.existsByEmail(newEmail)) {
             throw new EmailAlreadyExistException("Email уже используется другим пользователем!");
         }
 
@@ -147,6 +145,7 @@ public class UserServiceImpl implements UserService {
         emailChangeTokenRepository.save(changeToken);
         emailService.sendEmailChangeConfirm(newEmail, token);
     }
+
 
     @Override
     public boolean confirmEmailChange(String token) {
