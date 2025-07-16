@@ -22,10 +22,10 @@ public class   QuizController {
     // Создание квиза
     @PostMapping
     public ResponseEntity<QuizResponse> createQuiz(
-            @Valid @RequestBody CreateQuizRequest request) {
+            @Valid @RequestBody CreateQuizRequest request,
+            @RequestHeader ("X-User-Id") String idHeader) {
         try {
-            // TODO: Получать teacherId из токена
-            Long teacherId = 1L;
+            Long teacherId = Long.parseLong(idHeader);
             QuizResponse response = quizService.createQuiz(request, teacherId);
             return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
@@ -52,10 +52,10 @@ public class   QuizController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateQuiz(
             @PathVariable Long id,
-            @Valid @RequestBody UpdateQuizRequest request) {
+            @Valid @RequestBody UpdateQuizRequest request,
+            @RequestHeader("X-User-Id") String idHeader) {
         try {
-            // TODO: Получать teacherId из токена
-            Long teacherId = 1L;
+            Long teacherId = Long.parseLong(idHeader);
             QuizResponse response = quizService.updateQuiz(id, request, teacherId);
             return ResponseEntity.ok(response);
         } catch (ResourceNotFoundException e) {
@@ -71,10 +71,9 @@ public class   QuizController {
 
     // Удаление квиза
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteQuiz(@PathVariable Long id) {
+    public ResponseEntity<?> deleteQuiz(@PathVariable Long id, @RequestHeader("X-User-Id") String idHeader) {
         try {
-            // TODO: Получать teacherId из токена
-            Long teacherId = 1L;
+            Long teacherId = Long.parseLong(idHeader);
             quizService.deleteQuiz(id, teacherId);
             return ResponseEntity.noContent().build();
         } catch (ResourceNotFoundException e) {
@@ -90,10 +89,9 @@ public class   QuizController {
 
     // Публикация квиза
     @PostMapping("/{id}/publish")
-    public ResponseEntity<?> publishQuiz(@PathVariable Long id) {
+    public ResponseEntity<?> publishQuiz(@PathVariable Long id, @RequestHeader("X-User-Id") String idHeader) {
         try {
-            // TODO: Получать teacherId из токена
-            Long teacherId = 1L;
+            Long teacherId = Long.parseLong(idHeader);
             QuizResponse response = quizService.publishQuiz(id, teacherId);
             return ResponseEntity.ok(response);
         } catch (ResourceNotFoundException e) {

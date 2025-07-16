@@ -78,7 +78,7 @@ class QuizControllerTest {
         when(quizService.createQuiz(any(), anyLong())).thenReturn(expectedResponse);
 
         // Act
-        ResponseEntity<QuizResponse> response = quizController.createQuiz(request);
+        ResponseEntity<QuizResponse> response = quizController.createQuiz(request, "1");
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
